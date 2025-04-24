@@ -22,7 +22,7 @@ def create_friend():
         # validations
         required_fields = ["name", "role", "description", "gender"]
         for field in required_fields:
-            if field not in data:
+            if field not in data or not data.get(field):
                 return jsonify({"error": f"{field} is required"}), 400
 
         name = data.get("name")
@@ -45,7 +45,7 @@ def create_friend():
 
         db.session.commit()
 
-        return jsonify({"msg": "Friend created successfully"}), 201
+        return jsonify(new_friend.to_json()), 201
 
     except Exception as e:
         db.session.rollback()
